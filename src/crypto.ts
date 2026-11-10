@@ -27,6 +27,8 @@ export const KEY_LENGTH_BITS = 256;
 export const HEADER_LENGTH = MAGIC.length + 1 + SALT_LENGTH + IV_LENGTH;
 export const MAX_FILE_BYTES = 50 * 1024 * 1024;
 export const MAX_FILENAME_BYTES = 1024;
+export const MAX_CONTAINER_BYTES =
+  MAX_FILE_BYTES + HEADER_LENGTH + GCM_TAG_LENGTH + 2 + MAX_FILENAME_BYTES;
 
 export class InvalidContainerError extends Error {
   constructor(message = 'This file is not a valid encrypted container.') {
@@ -212,7 +214,7 @@ export async function decryptFile(
   container: Uint8Array,
   passphrase: string,
 ): Promise<DecryptedFile> {
-  if (container.byteLength > MAX_FILE_BYTES + HEADER_LENGTH + GCM_TAG_LENGTH + 2 + MAX_FILENAME_BYTES) {
+  if (container.byteLength > MAX_CONTAINER_BYTES) {
     throw new FileTooLargeError();
   }
   const header = parseHeader(container);

@@ -4,6 +4,7 @@ import {
   FileTooLargeError,
   FilenameTooLongError,
   InvalidContainerError,
+  MAX_CONTAINER_BYTES,
   MAX_FILE_BYTES,
   decryptFile,
   encryptFile,
@@ -60,12 +61,14 @@ function takeFile(file: File | undefined): void {
   if (!file) {
     return;
   }
-  if (file.size > MAX_FILE_BYTES) {
+  const limit = mode === 'decrypt' ? MAX_CONTAINER_BYTES : MAX_FILE_BYTES;
+  if (file.size > limit) {
     selectedFile = null;
     fileInput.value = '';
     dropLabel.textContent = 'Drop a file here or choose one';
     fileMeta.textContent = '';
-    setStatus(`This file is larger than the 50 MiB limit (${describeFile(file)}).`, true);
+    const label = mode === 'decrypt' ? 'encrypted file size limit' : '50 MiB limit';
+    setStatus(`This file is larger than the ${label} (${describeFile(file)}).`, true);
     return;
   }
   selectedFile = file;

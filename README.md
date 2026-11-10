@@ -73,7 +73,8 @@ A successful push to `main` deploys the `dist` folder to GitHub Pages.
 
 ## What went wrong
 
-TypeScript 5.9's DOM typings reject a `Uint8Array` coming from `subarray()` as a `BufferSource`, because the underlying buffer might be a `SharedArrayBuffer`. The first typecheck failed on the PBKDF2 and AES-GCM calls. The fix is a small helper that copies those views into a fresh `ArrayBuffer`-backed `Uint8Array` before passing them to Web Crypto. That change is only for typings; the runtime bytes are unchanged.
+- TypeScript 5.9's DOM typings reject a `Uint8Array` coming from `subarray()` as a `BufferSource`, because the underlying buffer might be a `SharedArrayBuffer`. The first typecheck failed on the PBKDF2 and AES-GCM calls. The fix is a small helper that copies those views into a fresh `ArrayBuffer`-backed `Uint8Array` before passing them to Web Crypto. That change is only for typings; the runtime bytes are unchanged.
+- A file just under the 50 MiB plaintext limit becomes slightly larger once the header, GCM tag, and encrypted file name are added. The first UI check used the same 50 MiB cap for decryption, which would have rejected a valid `.enc` file produced from a near-limit original. Decrypt mode now allows the extra container overhead.
 
 ## License
 
