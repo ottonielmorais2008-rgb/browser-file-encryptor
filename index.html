@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; worker-src 'none'; object-src 'none'; upgrade-insecure-requests"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    />
+    <meta
+      name="description"
+      content="Encrypt and decrypt files in your browser with AES-256-GCM. Nothing is uploaded."
+    />
+    <title>Browser File Encryptor</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">Local only</p>
+        <h1>Browser File Encryptor</h1>
+        <p class="lede">
+          Encrypt or decrypt a file on this device. The file and passphrase never
+          leave your browser. There is no server and no network request.
+        </p>
+      </header>
+
+      <section class="panel" aria-labelledby="tool-heading">
+        <h2 id="tool-heading" class="visually-hidden">Encrypt or decrypt a file</h2>
+
+        <div class="mode" role="tablist" aria-label="Mode">
+          <button type="button" id="mode-encrypt" class="mode-btn is-active" role="tab" aria-selected="true">
+            Encrypt
+          </button>
+          <button type="button" id="mode-decrypt" class="mode-btn" role="tab" aria-selected="false">
+            Decrypt
+          </button>
+        </div>
+
+        <label class="drop" id="drop-zone" for="file-input">
+          <input id="file-input" type="file" />
+          <span id="drop-label" class="drop-label">Drop a file here or choose one</span>
+          <span id="file-meta" class="file-meta"></span>
+        </label>
+
+        <div class="field">
+          <label for="passphrase">Passphrase</label>
+          <input
+            id="passphrase"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Enter a long, unique passphrase"
+          />
+          <p id="strength" class="strength" hidden></p>
+        </div>
+
+        <div class="field" id="confirm-field">
+          <label for="confirm">Confirm passphrase</label>
+          <input
+            id="confirm"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Type the passphrase again"
+          />
+        </div>
+
+        <p class="note">
+          Files are held in memory and limited to 50&nbsp;MiB. Choose a strong
+          passphrase: it is the only secret protecting the file.
+        </p>
+
+        <div class="actions">
+          <button type="button" id="run" class="primary">Encrypt file</button>
+          <button type="button" id="reset" class="ghost">Reset</button>
+        </div>
+
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <a id="download" class="download" hidden>Download</a>
+      </section>
+
+      <footer class="foot">
+        <p>
+          AES-256-GCM, PBKDF2-SHA-256 (600,000 iterations). Open source on
+          <a href="https://github.com/ottonielmorais2008-rgb/browser-file-encryptor">GitHub</a>.
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
